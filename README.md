@@ -94,3 +94,25 @@ Under utvecklingsfasen har stor vikt lagts vid att lösa kompatibilitetsproblem 
 1. Klona repot till din Raspberry Pi:
    ```bash
    git clone [https://github.com/jakobgoffe/nordhamn-ot.git](https://github.com/jakobgoffe/nordhamn-ot.git)
+
+
+1️⃣ Grundinstallation (Raspberry Pi OS)
+Steg:
+Installera Raspberry Pi OS Lite (64-bit) direkt på NVMe-enheten via Raspberry Pi Imager.
+
+Under "OS Customization", konfigurera:
+
+Hostname: sentry
+
+Aktivera SSH (lösenordsautentisering för initial setup).
+
+Konfigurera nätverk.
+
+Säkerställ att Pi 5:ans EEPROM är uppdaterad och konfigurerad för NVMe-boot.
+
+ℹ️ Designbeslut: Lagringsarkitektur & Prestanda (NVMe)
+En honeypot-sensor som emulerar OT-miljöer (Conpot) och samtidigt kör nätverksanalys (Suricata) genererar intensiva I/O-operationer (läs/skriv).
+
+Slitage: Ett traditionellt MicroSD-kort degraderas snabbt i denna typ av miljö och riskerar att korrumpera filsystemet.
+
+Stabilitet: Genom att utrusta Sentry-noden med en NVMe HAT och boota OS direkt från en M.2 SSD säkerställs industriell stabilitet, hög prestanda för Docker-containrar och tillräcklig kapacitet för centraliserad loggning.
