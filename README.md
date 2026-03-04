@@ -16,7 +16,7 @@ Detta projekt fokuserar på att emulera de industriella styrsystemen (OT) vid en
 ## 🧠 Metodik & AI som "Force Multiplier"
 Min kärnkompetens och mitt primära fokus i detta projekt ligger på den teoretiska förståelsen för OT-säkerhet – arkitektur, nätverkssegmentering, hotmodellering och driftsäkerhet.
 
-För att översätta denna teoretiska "VAD"-kunskap till praktiskt "HUR" (avancerad Linux-härdning, felsökning av källkod och Docker-orkestrering) har jag aktivt använt LLM-verktyg som en teknisk sparringpartner. Detta projekt demonstrerar därmed inte bara implementering av OT-säkerhetsprinciper i praktiken, utan bevisar också förmågan att agilt använda modern AI för att snabbt och säkert realisera komplexa arkitekturer.
+För att översätta denna teoretiska "VAD"och "VARFÖR"-kunskap till praktiskt "HUR" (avancerad Linux-härdning, felsökning av källkod och Docker-orkestrering) har jag aktivt använt LLM-verktyg som en teknisk sparringpartner. Detta projekt demonstrerar därmed inte bara implementering av OT-säkerhetsprinciper i praktiken, utan bevisar också förmågan att agilt använda modern AI för att snabbt och säkert realisera komplexa arkitekturer.
 
 ## 🛠️ Teknisk Stack
 - **Simulator:** Conpot v0.6.0 (MushMush Foundation)
