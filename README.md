@@ -13,6 +13,11 @@
 ## 📖 Om Projektet
 Detta projekt fokuserar på att emulera de industriella styrsystemen (OT) vid en simulerad hamn "Nordhamn" och dess Oljeterminal, Kaj 8314. Syftet är att skapa en höginteraktiv honeypot som simulerar en Siemens S7-PLC för att studera exponering av kritiska protokoll och nätverksinteraktioner i en kontrollerad miljö.
 
+## 🧠 Metodik & AI som "Force Multiplier"
+Min kärnkompetens och mitt primära fokus i detta projekt ligger på den teoretiska förståelsen för OT-säkerhet – arkitektur, nätverkssegmentering, hotmodellering och driftsäkerhet.
+
+För att översätta denna teoretiska "VAD"-kunskap till praktiskt "HUR" (avancerad Linux-härdning, felsökning av källkod och Docker-orkestrering) har jag aktivt använt LLM-verktyg som en teknisk sparringpartner. Detta projekt demonstrerar därmed inte bara implementering av OT-säkerhetsprinciper i praktiken, utan bevisar också förmågan att agilt använda modern AI för att snabbt och säkert realisera komplexa arkitekturer.
+
 ## 🛠️ Teknisk Stack
 - **Simulator:** Conpot v0.6.0 (MushMush Foundation)
 - **Monitoring & IDS:** Suricata (Intrusion Detection), Promtail & Loki
@@ -96,7 +101,8 @@ Under utvecklingsfasen har stor vikt lagts vid att lösa kompatibilitetsproblem 
    git clone [https://github.com/jakobgoffe/nordhamn-ot.git](https://github.com/jakobgoffe/nordhamn-ot.git)
 
 
-1️⃣ Grundinstallation (Raspberry Pi OS)
+## 1️⃣ Grundinstallation (Raspberry Pi OS)
+
 Steg:
 Installera Raspberry Pi OS Lite (64-bit) direkt på NVMe-enheten via Raspberry Pi Imager.
 
@@ -111,27 +117,81 @@ Konfigurera nätverk.
 Säkerställ att Pi 5:ans EEPROM är uppdaterad och konfigurerad för NVMe-boot.
 
 ℹ️ Designbeslut: Lagringsarkitektur & Prestanda (NVMe)
+
 En honeypot-sensor som emulerar OT-miljöer (Conpot) och samtidigt kör nätverksanalys (Suricata) genererar intensiva I/O-operationer (läs/skriv).
 
 Slitage: Ett traditionellt MicroSD-kort degraderas snabbt i denna typ av miljö och riskerar att korrumpera filsystemet.
 
 Stabilitet: Genom att utrusta Sentry-noden med en NVMe HAT och boota OS direkt från en M.2 SSD säkerställs industriell stabilitet, hög prestanda för Docker-containrar och tillräcklig kapacitet för centraliserad loggning.
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-2️⃣ Docker & Infrastruktur
+
+## 2️⃣ Docker & Infrastruktur
+
 Noden använder Docker Compose för att snabbt och konsekvent rulla ut både honeypot (Conpot) och övervakningsstacken.
 
 Steg:
 Installera Docker Engine (via officiellt skript):
 
-Bash:
+```bash
 
 curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+````
+
 Ge din användare behörighet att köra Docker (för att slippa skriva sudo framför varje docker-kommando i framtiden):
 
-Bash
+```bash
 sudo usermod -aG docker $USER
 
-´´´
+```
 (Obs: Kräver ut- och inloggning för att gälla)
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## 3️⃣ Projektstruktur & Volymer
+
+För att säkerställa att loggar och processdata från Sentry-noden inte försvinner om en container startas om, sätter vi upp en strikt katalogstruktur på NVMe-enheten (Bind Mounts).
+
+Steg:
+Skapa projektkatalog och underkataloger för persistens:
+
+```bash
+mkdir -p ~/nordhamn-ot/{conpot_logs,suricata_logs,loki_data,grafana_data}
+cd ~/nordhamn-ot
+
+```
+
+ℹ️ Designbeslut: Data Persistence (Bind Mounts vs Volumes)
+Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' mappar på host-systemet. Detta gör det mycket enklare för en administratör att direkt komma åt, backa upp eller rensa specifika loggfiler (t.ex. PCAP-filer från Suricata) utan att behöva interagera med Dockers interna filsystem.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 4️⃣ Konfiguration & Honeypot-mallen
+
+För att Conpot ska agera trovärdigt måste vi injicera en anpassad identitet. Standardmallarna i Conpot 0.6.0 lider dessutom av buggar relaterade till filsystemet som vi måste by-passa.
+
+Steg1 :
+Skapa konfigurationsfiler och injicera XML-mallen som definierar Nordhamns PLC (Siemens S7-300).
+
+```bash
+touch conpot.cfg nordhamn_working.xml nordhamn_index.html
+```
+
+ℹ️ Designbeslut: VFS Optimering (mem://)
+En känd instabilitet i simulatorn är att moduler som FTP och HTTP försöker skriva till ett låst virtuellt filsystem (VFS), vilket leder till "ResourceReadOnly"-krascher. Genom att explicit styra om data_fs_url till mem:// i XML-mallen, tvingar vi honeypoten att hantera alla filoperationer temporärt i RAM-minnet, vilket eliminerar krascherna helt.
+
+Steg 2: 
+Injicera en anpassad HTML-portal för webbgränssnittet (Port 80) för att maskera simulatorns bakomliggande teknik:
+
+```bash
+# Skapar en industriell inloggningssida för Nordhamn Kaj 8314
+cat << 'EOF' > nordhamn_index.html
+EOF
+```
+
+ℹ️ Designbeslut: Web Portal Injection
+Då Conpot v0.6.0 visade sig ha kompatibilitetsproblem med sitt inbyggda Jinja2-mallsystem, implementerades en strategisk override. Genom att volymmontera (bind mount) en statisk HTML-fil över containerns standard-index skapas en högre grad av realism (High Interaction Honeypot). Angriparen möts av en autentisk Siemens-inloggningssida för "Nordhamn" istället för ett tomt svar, vilket ökar chansen att samla in värdefulla inloggningsförsök (brute-force data).
