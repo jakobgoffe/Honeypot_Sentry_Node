@@ -116,3 +116,22 @@ En honeypot-sensor som emulerar OT-miljöer (Conpot) och samtidigt kör nätverk
 Slitage: Ett traditionellt MicroSD-kort degraderas snabbt i denna typ av miljö och riskerar att korrumpera filsystemet.
 
 Stabilitet: Genom att utrusta Sentry-noden med en NVMe HAT och boota OS direkt från en M.2 SSD säkerställs industriell stabilitet, hög prestanda för Docker-containrar och tillräcklig kapacitet för centraliserad loggning.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2️⃣ Docker & Infrastruktur
+Noden använder Docker Compose för att snabbt och konsekvent rulla ut både honeypot (Conpot) och övervakningsstacken.
+
+Steg:
+Installera Docker Engine (via officiellt skript):
+
+Bash:
+
+curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+Ge din användare behörighet att köra Docker (för att slippa skriva sudo framför varje docker-kommando i framtiden):
+
+Bash
+sudo usermod -aG docker $USER
+
+´´´
+(Obs: Kräver ut- och inloggning för att gälla)
