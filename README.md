@@ -84,7 +84,7 @@ Nmap S7: Svarar på port 102 som en aktiv PLC.
 
 HTTP: Visar Nordhamns kontrollpanel istället för en felkod.
 
-## ⚠️ Utmaningar & Lärdomar (LIA-fokus)
+## ⚠️ Utmaningar & Lärdomar
 Under utvecklingsfasen har stor vikt lagts vid att lösa kompatibilitetsproblem i **Conpot 0.6.0**. Arbetet har gett djupgående kunskaper i:
 - **Konfigurationsvalidering:** Felsökning av `configparser` och källkod för att möta strikta krav på sektionsindelning i .cfg-filer.
 - **Protocol Handshaking:** Analys av varför vissa Nmap-skript (t.ex. `s7-info`) nekas vid emulering och hur man anpassar svar för att öka trovärdigheten.
