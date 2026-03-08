@@ -178,6 +178,9 @@ För att containerns begränsade användare ska kunna läsa filen sätter vi rä
 chmod -R 777 nordhamn/http/htdocs
 ```
 
+**Resultatet i webbläsaren:**
+![Nordhamn PLC Login Interface](nordhamn_web.png)
+
 ℹ️ Designbeslut: Web Portal Injection
 Istället för att låta simulatorn spotta ut tomma sidor eller standardiserade felkoder, möts angriparen av en autentisk Siemens-inloggningssida. Detta ökar markant chansen att samla in värdefulla inloggningsförsök (brute-force data) då angriparen tror sig ha hittat ett kritiskt styrsystem.
 
