@@ -21,6 +21,7 @@ För att översätta denna teoretiska kunskap till praktiskt utförande (avancer
 ## 🛠️ Teknisk Stack
 * **Simulator:** Conpot v0.6.0 (MushMush Foundation)
 * **Monitoring & IDS:** Suricata, Promtail & Loki *(Kommande)*
+* **Red Team (Angripare):** Kali Linux på VirtualBox
 * **Visualisering:** Grafana *(Kommande)*
 * **Infrastruktur:** Docker & Docker Compose
 * **Hårdvara:** Raspberry Pi 5 med NVMe-lagring (Sentry-nod)
@@ -34,9 +35,10 @@ Denna honeypot är fundamentet i en större Threat Intelligence-pipeline.
 - [x] **Fas 1: Core Architecture & Frontend** (Custom XML, Web UI, Docker, Edge-konfiguration)
 - [x] **Fas 2: Protokoll-Simulering** (Konfigurering av realistiska Modbus-register och S7-noder för "Pump Station 01")
 - [ ] **Fas 3: Nätverksövervakning & Dashboard** (Suricata IDS & Grafana)
-- [ ] **Fas 4: Automatisering av Threat Intel** (Integration av n8n-workflows)
-- [ ] **Fas 5: AI-Analys** (AI-agenter som tolkar råa loggfiler och identifierar attackmönster)
-- [ ] **Fas 6: Rapportering** (Automatisk export av berikad attackdata till Excel)
+- [ ] **Fas 4: Red Team** (Kali Linux på Virtualbox)
+- [ ] **Fas 5: Automatisering av Threat Intel** (Integration av n8n-workflows)
+- [ ] **Fas 6: AI-Analys** (AI-agenter som tolkar råa loggfiler och identifierar attackmönster)
+- [ ] **Fas 7: Rapportering** (Automatisk export av berikad attackdata till Excel)
 
 
 
