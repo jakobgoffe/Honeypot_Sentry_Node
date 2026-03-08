@@ -179,6 +179,8 @@ chmod -R 777 nordhamn/http/htdocs
 ```
 
 **Resultatet i webbläsaren:**
+
+
 ![Nordhamn PLC Login Interface](nordhamn_web.png)
 
 ℹ️ Designbeslut: Web Portal Injection
