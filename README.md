@@ -234,7 +234,7 @@ curl -L http://localhost
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-5️⃣ Bygga Kontrollrummet (SOC & Nätverksövervakning)
+## 7️⃣ Bygga Kontrollrummet (SOC & Nätverksövervakning)
 För att förvandla fällan till en fullfjädrad SOC (Security Operations Center) lägger vi till nätverksövervakning och visuell logghantering. Vi använder Suricata som IDS (Intrusion Detection System) i host-läge för att fånga upp Nmap-skanningar och exploits. För att visualisera detta använder vi en PLG-stack (Promtail, Loki, Grafana).
 
 Rättigheter för databaserna
@@ -277,7 +277,7 @@ scrape_configs:
 EOF
 ```
 
-6️⃣ Den Kompletta SOC-Infrastrukturen
+## 8️⃣ Den Kompletta SOC-Infrastrukturen
 Vi skapar nu vår slutgiltiga docker-compose.yml som knyter ihop fällan (Conpot), övervakningskameran (Suricata) och kontrollrummet (PLG-stacken).
 
 ℹ️ Designbeslut: Suricata i Host Mode
@@ -347,7 +347,7 @@ services:
 EOF
 ```
 
-7️⃣ Driftsättning och Verifiering
+## 9️⃣ Driftsättning och Verifiering
 Starta upp hela SOC-miljön:
 
 ```Bash
