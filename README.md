@@ -227,8 +227,153 @@ sudo docker compose up -d
 ```
 
 Verifiera att webbservern och fällan fungerar genom att begära sidan lokalt (eller surfa till enhetens IP-adress i en webbläsare):
-```
 
 ```Bash
 curl -L http://localhost
 ```
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5️⃣ Bygga Kontrollrummet (SOC & Nätverksövervakning)
+För att förvandla fällan till en fullfjädrad SOC (Security Operations Center) lägger vi till nätverksövervakning och visuell logghantering. Vi använder Suricata som IDS (Intrusion Detection System) i host-läge för att fånga upp Nmap-skanningar och exploits. För att visualisera detta använder vi en PLG-stack (Promtail, Loki, Grafana).
+
+Rättigheter för databaserna
+Grafana och Loki är strikta med vem som får skriva i deras mappar. Vi ger databaserna full skrivrättighet till de mappar vi skapade tidigare:
+
+```Bash
+chmod -R 777 ~/nordhamn-ot/loki_data ~/nordhamn-ot/grafana_data
+```
+
+Konfigurera Logg-agenten (Promtail)
+Promtail agerar "postiljon" och skickar loggarna från Conpot och Suricata vidare till vår Loki-databas.
+
+```Bash
+cat << 'EOF' > ~/nordhamn-ot/promtail-config.yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: conpot
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: conpot
+          __path__: /var/log/conpot/*.json
+  - job_name: suricata
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: suricata
+          __path__: /var/log/suricata/eve.json
+EOF
+```
+
+6️⃣ Den Kompletta SOC-Infrastrukturen
+Vi skapar nu vår slutgiltiga docker-compose.yml som knyter ihop fällan (Conpot), övervakningskameran (Suricata) och kontrollrummet (PLG-stacken).
+
+ℹ️ Designbeslut: Suricata i Host Mode
+För att Suricata ska kunna se all inkommande trafik mot Raspberry Pi:n (och inte bara Dockers interna, isolerade trafik), körs containern med network_mode: "host" och knyts direkt till Wi-Fi-gränssnittet (wlan0).
+
+```Bash
+cat << 'EOF' > ~/nordhamn-ot/docker-compose.yml
+services:
+  conpot:
+    image: ghcr.io/telekom-security/conpot:24.04.1
+    container_name: nordhamn_conpot
+    restart: unless-stopped
+    environment:
+      - CONPOT_TMP=/tmp
+      - CONPOT_JSON_LOG=/var/log/conpot/conpot.json
+    ports:
+      - '80:80'
+      - '102:102'
+      - '502:502'
+      - '161:161/udp'
+    volumes:
+      - ./conpot_logs:/var/log/conpot
+      - ./nordhamn/template.xml:/usr/lib/python3.11/site-packages/conpot/templates/default/template.xml
+      - ./nordhamn/http/htdocs/index.html:/usr/lib/python3.11/site-packages/conpot/templates/default/http/htdocs/index.html
+    command: conpot --template default --config /etc/conpot/conpot.cfg --logfile /var/log/conpot/conpot.log --temp_dir /tmp
+
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: nordhamn_suricata
+    restart: unless-stopped
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_NICE
+    volumes:
+      - ./suricata_logs:/var/log/suricata
+    command: -i wlan0
+
+  loki:
+    image: grafana/loki:2.9.2
+    container_name: nordhamn_loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki_data:/loki
+
+  promtail:
+    image: grafana/promtail:2.9.2
+    container_name: nordhamn_promtail
+    restart: unless-stopped
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/config.yml
+      - ./conpot_logs:/var/log/conpot:ro
+      - ./suricata_logs:/var/log/suricata:ro
+    command: -config.file=/etc/promtail/config.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nordhamn_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+EOF
+```
+
+7️⃣ Driftsättning och Verifiering
+Starta upp hela SOC-miljön:
+
+```Bash
+cd ~/nordhamn-ot
+sudo docker compose up -d
+```
+
+Ladda Hot-signaturer till IDS
+För att Suricata ska veta vad som är skadlig trafik måste den laddas med de senaste attackreglerna (Emerging Threats). Kör uppdateringen inuti containern och starta sedan om den för att läsa in minnet:
+
+```Bash
+sudo docker exec nordhamn_suricata suricata-update
+sudo docker restart nordhamn_suricata
+```
+
+Konfigurera Grafana Dashboard
+Surfa in på http://<DIN-PI-IP>:3000 i en webbläsare.
+
+Logga in med standarduppgifterna (admin / admin).
+
+Navigera till Connections -> Data sources i vänstermenyn.
+
+Klicka på Add data source och välj Loki.
+
+Fyll i URL: http://loki:3100
+
+Klicka på Save & test. (Ett grönt meddelande bekräftar anslutningen).
+
+Fällan är nu fullt operativ, övervakad och redo för Red Team-övningar!
