@@ -34,7 +34,7 @@ Denna honeypot är fundamentet i en större Threat Intelligence-pipeline.
 
 - [x] **Fas 1: Core Architecture & Frontend** (Custom XML, Web UI, Docker, Edge-konfiguration)
 - [x] **Fas 2: Protokoll-Simulering** (Konfigurering av realistiska Modbus-register och S7-noder för "Pump Station 01")
-- [ ] **Fas 3: Nätverksövervakning & Dashboard** (Suricata IDS & Grafana)
+- [x] **Fas 3: Nätverksövervakning & Dashboard** (Suricata IDS & Grafana)
 - [ ] **Fas 4: Red Team** (Kali Linux på Virtualbox)
 - [ ] **Fas 5: Automatisering av Threat Intel** (Integration av n8n-workflows)
 - [ ] **Fas 6: AI-Analys** (AI-agenter som tolkar råa loggfiler och identifierar attackmönster)
