@@ -59,6 +59,10 @@ Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'B
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+## 🟢 FAS 1: Core Architecture & Infrastruktur
+Etablering av hårdvara, operativsystem och Docker-miljö.
+
+
 ## 1️⃣ Grundinstallation (Raspberry Pi OS)
 Steg:
 
@@ -97,6 +101,9 @@ cd ~/nordhamn-ot
 Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' på host-systemet. Detta gör det mycket enklare för en administratör att direkt komma åt, backa upp eller rensa specifika loggfiler utan att behöva interagera med Dockers interna filsystem.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 🟡 FAS 2: Protokoll-Simulering & Frontend
+Konfigurering av realistiska Modbus-register, S7-noder och webbportal.
 
 ## 3️⃣ Skapa Databashjärnan (Custom XML)
 För att Conpot ska veta vilka Modbus-register den ska exponera (och vad pumpstationen heter), skapar vi en skräddarsydd template.xml.
@@ -233,6 +240,9 @@ curl -L http://localhost
 ```
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 🟠 FAS 3: Nätverksövervakning & Dashboard
+Implementering av IDS (Suricata) och PLG-stack för loggvisualisering.
 
 ## 7️⃣ Bygga Kontrollrummet (SOC & Nätverksövervakning)
 För att förvandla fällan till en fullfjädrad SOC (Security Operations Center) lägger vi till nätverksövervakning och visuell logghantering. Vi använder Suricata som IDS (Intrusion Detection System) i host-läge för att fånga upp Nmap-skanningar och exploits. För att visualisera detta använder vi en PLG-stack (Promtail, Loki, Grafana).
@@ -377,3 +387,9 @@ Fyll i URL: http://loki:3100
 Klicka på Save & test. (Ett grönt meddelande bekräftar anslutningen).
 
 Fällan är nu fullt operativ, övervakad och redo för Red Team-övningar!
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 🔴 FAS 4: Red Team (Attack-simulering)
+Simulering av angrepp från Kali Linux för att verifiera detektion och loggning.
+
