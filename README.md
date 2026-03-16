@@ -36,7 +36,7 @@ Denna honeypot är fundamentet i en större Threat Intelligence-pipeline.
 - [x] **Fas 2: Protokoll-Simulering** (Konfigurering av realistiska Modbus-register och S7-noder för "Pump Station 01")
 - [x] **Fas 3: Nätverksövervakning & Dashboard** (Suricata IDS & Grafana)
 - [ ] **Fas 4: Red Team** (Kali Linux på Virtualbox)
-- [ ] **Fas 5:Automatisering av Threat Intel** (Open Source & Node-RED) Integration av helt öppna, licensoberoende orkestreringsverktyg (Node-RED) för att hantera larm och dataflöden.
+- [ ] **Fas 5: Automatisering av Threat Intel** (Open Source & Node-RED) Integration av helt öppna, licensoberoende orkestreringsverktyg (Node-RED) för att hantera larm och dataflöden.
 - [ ] **Fas 6: Sovereign AI-Analys** Implementation av AI-agenter som tolkar råa loggfiler och identifierar komplexa attackmönster. Prio EU-suveränitet/OpenSource (Mistral/Llama).
 - [ ] **Fas 7: Rapportering**  Arkitekterad för produktifieringsbarhet och data-suveränitet (Automatisk export av berikad attackdata till Excel).
 - [ ] **Fas 8: Utveckla process-simulering** (Kommande) Utveckling av dynamiska fysik-skript (Python) för Modbus-registren, där temperatur, tryck och oljenivå korrelerar över tid. Syftet är att eliminera IoC:s (Indicators of Compromise) för honeypots och lura avancerade angripare att interagera längre med systemet.
