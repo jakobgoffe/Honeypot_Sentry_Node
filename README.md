@@ -56,7 +56,7 @@ För att öka trovärdigheten mot angripare har enheten konfigurerats att identi
 * **Register 1008:** Systemfel (0 = Inga fel)
 
 ℹ️ Designbeslut: Data Persistence & Kirurgiska Ingrepp
-Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' på host-systemet. För att kringgå Conpots ibland extremt strikta XML-validering monterar vi vår egen databashjärna (template.xml) och webbportal (index.html) direkt över de inbyggda standardfilerna i containern. Detta kallas för ett kirurgiskt ingrepp och skapar en stabil driftsmiljö. Detta ska vidareutvecklas för djupare simulering i Fas 8
+Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' på host-systemet. För att kringgå Conpots ibland extremt strikta XML-validering monterar vi vår egen databashjärna (template.xml) och webbportal (index.html) direkt över de inbyggda standardfilerna i containern. Detta kallas för ett kirurgiskt ingrepp och skapar en stabil driftsmiljö. Detta ska vidareutvecklas för djupare simulering i Fas 8.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
