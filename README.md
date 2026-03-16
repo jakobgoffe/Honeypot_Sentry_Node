@@ -39,6 +39,7 @@ Denna honeypot är fundamentet i en större Threat Intelligence-pipeline.
 - [ ] **Fas 5:Automatisering av Threat Intel** (Open Source & Node-RED) Integration av helt öppna, licensoberoende orkestreringsverktyg (Node-RED) för att hantera larm och dataflöden.
 - [ ] **Fas 6: Sovereign AI-Analys** Implementation av AI-agenter som tolkar råa loggfiler och identifierar komplexa attackmönster. Prio EU-suveränitet/OpenSource (Mistral/Llama).
 - [ ] **Fas 7: Rapportering**  Arkitekterad för produktifieringsbarhet och data-suveränitet (Automatisk export av berikad attackdata till Excel).
+- [ ] **Fas 8: Utveckla process-simulering** (Kommande) Utveckling av dynamiska fysik-skript (Python) för Modbus-registren, där temperatur, tryck och oljenivå korrelerar över tid. Syftet är att eliminera IoC:s (Indicators of Compromise) för honeypots och lura avancerade angripare att interagera längre med systemet.
 
 
 
@@ -55,7 +56,7 @@ För att öka trovärdigheten mot angripare har enheten konfigurerats att identi
 * **Register 1008:** Systemfel (0 = Inga fel)
 
 ℹ️ Designbeslut: Data Persistence & Kirurgiska Ingrepp
-Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' på host-systemet. För att kringgå Conpots ibland extremt strikta XML-validering monterar vi vår egen databashjärna (template.xml) och webbportal (index.html) direkt över de inbyggda standardfilerna i containern. Detta kallas för ett kirurgiskt ingrepp och skapar en stabil driftsmiljö.
+Istället för att låta Docker hantera anonyma volymer, används uttryckliga 'Bind Mounts' på host-systemet. För att kringgå Conpots ibland extremt strikta XML-validering monterar vi vår egen databashjärna (template.xml) och webbportal (index.html) direkt över de inbyggda standardfilerna i containern. Detta kallas för ett kirurgiskt ingrepp och skapar en stabil driftsmiljö. Detta ska vidareutvecklas för djupare simulering i Fas 8
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
